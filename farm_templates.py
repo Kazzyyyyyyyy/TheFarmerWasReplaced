@@ -1,20 +1,20 @@
 def farm_carrots(): 
-	if get_ground_type() != Grounds.Soil: 
+	if get_ground_type() != Grounds.Soil:
 		till() 
-		plant(Entities.Carrot)
 			
 	elif can_harvest() or get_entity_type() != Entities.Carrot: 
 		harvest() 
-		plant(Entities.Carrot) 
+		
+	plant(Entities.Carrot) 
 		
 def farm_bush(): 
-	if get_ground_type() != Grounds.Soil: 
+	if get_ground_type() != Grounds.Soil: # not needed but looks better
 		till() 
-		plant(Entities.Carrot)
-	
+		
 	elif can_harvest() or get_entity_type() != Entities.Bush: 
 		harvest() 
-		plant(Entities.Bush) 
+		
+	plant(Entities.Bush) 
 		
 def farm_hay():
 	if get_ground_type() != Grounds.Grassland: 
@@ -26,20 +26,20 @@ def farm_hay():
 def farm_pumpkin(): 
 	if get_ground_type() != Grounds.Soil: 
 		till() 
-		plant(Entities.Pumpkin)
 		
-	elif get_entity_type() == Entities.Dead_Pumpkin: 
-		plant(Entities.Pumpkin) 
+	elif get_entity_type() == Entities.Dead_Pumpkin:
+		plant(Entities.Pumpkin)
+		return
 	
 	elif can_harvest() or get_entity_type() != Entities.Pumpkin: 
 		harvest() 
-		plant(Entities.Pumpkin) 
+		
+	plant(Entities.Pumpkin) 
 
 def farm_sunflower(): 
 	if get_ground_type() != Grounds.Soil: 
 		till() 
-		plant(Entities.Pumpkin)
-		
 	else:
-		harvest()
-		plant(Entities.Sunflower)
+		harvest()	
+		
+	plant(Entities.Sunflower)

@@ -1,25 +1,20 @@
 import dynamic_crop_manager
 import utils
+import settings
+
 
 def main(): 
-	list = dynamic_crop_manager.one_item_max(Entities.Pumpkin) 
+	list = dynamic_crop_manager.one_item_max(settings.oneItemMaxWanted) # get list of Entities to plant 
 	
-	while True: 
-		if get_pos_x() == 0 and get_pos_y() == 0:  
-			break
-			
-		utils.simpleMove()
+	utils.position_drone(settings.droneStartPos) # not needed but nice
 		
-	
+	if settings.DEBUG: 
+		quick_print("[main] farming...") 
+		
 	while True: 
 		for item in list: 
-			if(list[item] == 0):
-				continue
-				
 			for i in range(list[item]): 
-				utils.item_to_farm_call(item)
+				utils.auto_farm_call(item)
 				utils.simpleMove()
-				
-				
 			
 main()
