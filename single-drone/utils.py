@@ -1,9 +1,9 @@
-import farm_templates
+import farmTemplates
 import settings
 
 
 # movement
-def simpleMove(vertical = North, horizontal = East): 
+def autoMove(vertical = North, horizontal = East): 
 	if get_pos_x() < get_world_size() - 1:
 		move(horizontal) 
 	else: 
@@ -13,16 +13,18 @@ def simpleMove(vertical = North, horizontal = East):
 
 def position_drone(pos):
 	if settings.DEBUG:
-		quick_print("[utils] positioning drone")
+		quick_print("[utils] positioning drone (", pos[0], "/", pos[1], ")")
 		
-	while True: 
-		if get_pos_y() == pos[0] and get_pos_x() == pos[1]:  
-			break
+	moveOptionsY = { True:North, False:South }
+	moveOptionsX = { True:East, False:West }
 	
-		simpleMove()
+	yMove = moveOptionsY[pos[0] > get_pos_y()]
+	while get_pos_y() != pos[0]: 
+		move(yMove) 
 	
-	if settings.DEBUG:
-		quick_print("[utils] drone positioned (", pos[0], "/", pos[1], ")")
+	xMove = moveOptionsX[pos[1] > get_pos_x()]
+	while get_pos_x() != pos[1]: 
+		move(xMove)
 		
 		
 		
@@ -50,6 +52,18 @@ def get_yield(itemOrEnt):
 		return defaultYield ** (num_unlocked(Unlocks.Cactus) - 1)
 		
 
+def can_use_item(item): 
+	if not settings.keepItemsAboveNum: 
+		return True
+	
+	for key in settings.keepItemsAboveNum: 
+		if key == item: 
+			if num_items(item) > settings.keepItemsAboveNum[key]:
+				return True
+			
+			return False 
+	
+		
 		
 # conversions
 itemToEntity = {
@@ -58,7 +72,9 @@ itemToEntity = {
 	Items.Carrot: Entities.Carrot, 
 	Items.Pumpkin: Entities.Pumpkin, 
 	Items.Power: Entities.Sunflower, 
-	Items.Cactus: Entities.Cactus
+	Items.Cactus: Entities.Cactus, 
+	Items.Weird_Substance: Entities.Grass,
+	Items.Gold: Entities.Treasure
 }
 
 entityToItem = {
@@ -67,28 +83,28 @@ entityToItem = {
 	Entities.Carrot: Items.Carrot,
 	Entities.Pumpkin: Items.Pumpkin, 
 	Entities.Sunflower: Items.Power, 
-	Entities.Cactus: Items.Cactus
+	Entities.Cactus: Items.Cactus,
+	Entities.Treasure: Items.Gold
 }
 	
 def auto_farm_call(itemOrEnt): 
 	if itemOrEnt == Items.Hay or itemOrEnt == Entities.Grass:
-		farm_templates.farm_hay() 
+		farmTemplates.farm_grass() 
 		
 	elif itemOrEnt == Items.Wood or itemOrEnt == Entities.Bush or itemOrEnt == Entities.Tree: 
-		farm_templates.farm_bush() # change to tree if needed
+		farmTemplates.farm_bush() # change to tree if you want
 		
 	elif itemOrEnt == Items.Carrot or itemOrEnt == Entities.Carrot: 
-		farm_templates.farm_carrots()
+		farmTemplates.farm_carrots()
 	
 	elif itemOrEnt == Items.Pumpkin or itemOrEnt == Entities.Pumpkin: 
-		farm_templates.farm_pumpkin()
+		farmTemplates.farm_pumpkin()
 	
 	elif itemOrEnt == Items.Power or itemOrEnt == Entities.Sunflower: 
-		farm_templates.farm_sunflower()
+		farmTemplates.farm_sunflower()
 	
-	#elif itemOrEnt == Items.Cactus or itemOrEnt == Entities.Cactus: 
-				
+	elif itemOrEnt == Items.Cactus or itemOrEnt == Entities.Cactus: 
+		farmTemplates.farm_cactus()
 	
-		
-		
-
+	elif itemOrEnt == Items.Gold or itemOrEnt == Entities.Treasure:
+		farmTemplates.farm_treasure()
