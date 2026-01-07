@@ -1,2 +1,1 @@
-everything still in work, just started yesterday 
-
+game finished, code still messy - will cleanup/fix soon 
